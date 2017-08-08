@@ -1,0 +1,16 @@
+PROCEDURE "BI_TEST"."BI_HANA_EXP.Procedures::SP_TRYCATCH_EXAMPLE" ( ) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA BI_TEST
+	--READS SQL DATA 
+	AS
+BEGIN
+/***************************** 
+	Write your procedure logic 
+ *****************************/
+ 
+ 
+-- to copy 
+ 
+ 
+END;

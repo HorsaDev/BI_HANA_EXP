@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CA_RSUM_MODEL_1" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="CA_RSUM_MODEL_1"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="38"/>
+  <dataSources>
+    <DataSource id="T_TEST_RSUM" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="BI_TEST" columnObjectName="T_TEST_RSUM"/>
+    </DataSource>
+    <DataSource id="RIGHT$$$$T_TEST_RSUM$$" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="BI_TEST" columnObjectName="T_TEST_RSUM"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="LEFT">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="DATA_L"/>
+        <viewAttribute id="VAULE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#T_TEST_RSUM">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_L" source="DATA"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VAULE" source="VAULE"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="RIGHT">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="DATA_R"/>
+        <viewAttribute id="VAULE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#RIGHT$$$$T_TEST_RSUM$$">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_R" source="DATA"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VAULE" source="VAULE"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="SELF_JOIN" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="DATA_L"/>
+        <viewAttribute id="DATA_R"/>
+        <viewAttribute id="VAULE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#LEFT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_L" source="DATA_L"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VAULE" source="VAULE"/>
+      </input>
+      <input node="#RIGHT">
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_R" source="DATA_R"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+      </input>
+      <joinAttribute name="NAME"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="PROJ_DATE" filterExpressionLanguage="COLUMN_ENGINE">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME"/>
+        <viewAttribute id="DATA_L"/>
+        <viewAttribute id="DATA_R"/>
+        <viewAttribute id="VAULE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#SELF_JOIN">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_L" source="DATA_L"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_R" source="DATA_R"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VAULE" source="VAULE"/>
+      </input>
+      <filter>&quot;DATA_L&quot;&lt;=&quot;DATA_R&quot;</filter>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME"/>
+        <viewAttribute aggregationType="sum" id="VAULE"/>
+        <viewAttribute id="DATA_R"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#PROJ_DATE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="VAULE" source="VAULE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATA_R" source="DATA_R"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="NAME" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="NAME"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="NAME"/>
+      </attribute>
+      <attribute id="DATA" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="DATA"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="DATA_R"/>
+      </attribute>
+      <attribute id="VAULE" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="VAULE"/>
+        <keyMapping columnObjectName="Aggregation_1" columnName="VAULE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="99" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="LEFT" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="417"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="RIGHT" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="417"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="SELF_JOIN" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="321"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="PROJ_DATE" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="243"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

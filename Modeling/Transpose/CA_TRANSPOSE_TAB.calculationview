@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="CA_DATE_12M" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <origin/>
+  <descriptions defaultDescription="CA_DATE_TEST"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="42"/>
+  <dataSources>
+    <DataSource id="TF_CREATE_MATRIX_FIXED" type="TABLE_FUNCTION">
+      <resourceUri>BI_HANA_EXP.Modeling.Transpose::TF_CREATE_MATRIX_FIXED</resourceUri>
+    </DataSource>
+    <DataSource id="T_TEST_TRANSPOSE" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="BI_TEST" columnObjectName="T_TEST_TRANSPOSE"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="FLAG"/>
+        <viewAttribute id="M1"/>
+        <viewAttribute id="M2"/>
+        <viewAttribute id="M3"/>
+        <viewAttribute id="M4"/>
+        <viewAttribute id="M5"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#TF_CREATE_MATRIX_FIXED">
+        <mapping xsi:type="Calculation:AttributeMapping" target="FLAG" source="FLAG"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M1" source="M1"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M2" source="M2"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M3" source="M3"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M4" source="M4"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M5" source="M5"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="TABKEY"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#T_TEST_TRANSPOSE">
+        <mapping xsi:type="Calculation:AttributeMapping" target="TABKEY" source="TABKEY"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="M1"/>
+        <viewAttribute id="M2"/>
+        <viewAttribute id="M3"/>
+        <viewAttribute id="M4"/>
+        <viewAttribute id="M5"/>
+        <viewAttribute id="TARGET"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="NVARCHAR" id="C1" length="8" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;TARGET&quot;*&quot;M1&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="NVARCHAR" id="C2" length="8" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;TARGET&quot;*&quot;M2&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="NVARCHAR" id="C3" length="8" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;TARGET&quot;*&quot;M3&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="NVARCHAR" id="C4" length="8" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;TARGET&quot;*&quot;M4&quot;</formula>
+        </calculatedViewAttribute>
+        <calculatedViewAttribute datatype="NVARCHAR" id="C5" length="8" expressionLanguage="COLUMN_ENGINE">
+          <formula>&quot;TARGET&quot;*&quot;M5&quot;</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="TARGET" source="TABKEY"/>
+      </input>
+      <input node="#Projection_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="M1" source="M1"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M2" source="M2"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M3" source="M3"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M4" source="M4"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="M5" source="M5"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TARGET" source="FLAG"/>
+      </input>
+      <joinAttribute name="TARGET"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_2">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute aggregationType="max" id="C1"/>
+        <viewAttribute aggregationType="max" id="C2"/>
+        <viewAttribute aggregationType="max" id="C3"/>
+        <viewAttribute aggregationType="max" id="C4"/>
+        <viewAttribute aggregationType="max" id="C5"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Join_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="C1" source="C1"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="C2" source="C2"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="C3" source="C3"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="C4" source="C4"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="C5" source="C5"/>
+      </input>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Aggregation_2">
+    <descriptions/>
+    <attributes>
+      <attribute id="C1" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="C1"/>
+        <keyMapping columnObjectName="Aggregation_2" columnName="C1"/>
+      </attribute>
+      <attribute id="C2" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="C2"/>
+        <keyMapping columnObjectName="Aggregation_2" columnName="C2"/>
+      </attribute>
+      <attribute id="C3" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="C3"/>
+        <keyMapping columnObjectName="Aggregation_2" columnName="C3"/>
+      </attribute>
+      <attribute id="C4" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="C4"/>
+        <keyMapping columnObjectName="Aggregation_2" columnName="C4"/>
+      </attribute>
+      <attribute id="C5" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="C5"/>
+        <keyMapping columnObjectName="Aggregation_2" columnName="C5"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="99" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="339"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="339"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="243"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Aggregation_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

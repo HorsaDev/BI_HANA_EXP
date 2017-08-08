@@ -1,0 +1,28 @@
+FUNCTION "BI_TEST"."BI_HANA_EXP.Modeling.Functions::SF_ISNUMERIC" (i_target NVARCHAR (18) ) 
+	RETURNS flag INT
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ 
+IF length(ltrim(i_target,'+-.0123456789')) > 0
+
+	then flag := 0;
+	Else flag := 1;
+
+END IF;
+
+-- call example
+/*
+-- alpha convertion
+
+select 
+	case 
+		when "BI_TEST"."BI_HANA_EXP.Modeling.Functions::SF_ISNUMERIC"('A') = 1 then 'A'
+		else lpad('A',18,'0')
+	end as "ALPHA" 
+from DUMMY;
+*/
+END;

@@ -1,0 +1,43 @@
+FUNCTION "BI_TEST"."BI_HANA_EXP.Modeling.Rolling_12M::TF_CREATE_MATRIX_FIXED" ( ) 
+	RETURNS TABLE (
+		FLAG integer,
+		M1 integer,
+		M2 integer,
+		M3 integer,
+		M4 integer,
+		M5 integer,
+		M6 integer,
+		M7 integer,
+		M8 integer,
+		M9 integer,
+		M10 integer,
+		M11 integer,
+		M12 integer		
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+
+DECLARE FL  INTEGER ARRAY := ARRAY(1,2,3,4,5,6,7,8,9,10,11,12);
+DECLARE M1  INTEGER ARRAY := ARRAY(1,0,0,0,0,0,0,0,0,0 ,0 ,0);
+DECLARE M2  INTEGER ARRAY := ARRAY(0,1,0,0,0,0,0,0,0,0 ,0 ,0);
+DECLARE M3  INTEGER ARRAY := ARRAY(0,0,1,0,0,0,0,0,0,0 ,0 ,0);
+DECLARE M4  INTEGER ARRAY := ARRAY(0,0,0,1,0,0,0,0,0,0 ,0 ,0);
+DECLARE M5  INTEGER ARRAY := ARRAY(0,0,0,0,1,0,0,0,0,0 ,0 ,0);
+DECLARE M6  INTEGER ARRAY := ARRAY(0,0,0,0,0,1,0,0,0,0 ,0 ,0);
+DECLARE M7  INTEGER ARRAY := ARRAY(0,0,0,0,0,0,1,0,0,0 ,0 ,0);
+DECLARE M8  INTEGER ARRAY := ARRAY(0,0,0,0,0,0,0,1,0,0 ,0 ,0);
+DECLARE M9  INTEGER ARRAY := ARRAY(0,0,0,0,0,0,0,0,1,0 ,0 ,0);
+DECLARE M10 INTEGER ARRAY := ARRAY(0,0,0,0,0,0,0,0,0,1 ,0 ,0);
+DECLARE M11 INTEGER ARRAY := ARRAY(0,0,0,0,0,0,0,0,0,0 ,1 ,0);
+DECLARE M12 INTEGER ARRAY := ARRAY(0,0,0,0,0,0,0,0,0,0 ,0 ,1);
+
+tmp = UNNEST (:FL, :M1, :M2, :M3, :M4, :M5, :M6, :M7, :M8, :M9, :M10, :M11, :M12)
+		AS (FLAG, M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12);
+
+return (select * from :tmp);
+
+END;
